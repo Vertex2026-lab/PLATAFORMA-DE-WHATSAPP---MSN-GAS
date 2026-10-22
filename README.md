@@ -36,3 +36,15 @@ Os dados são salvos no localStorage do navegador. Não há login, sincronizaç�
 Exige servidor com autenticação de atendentes, banco de dados, gestão segura de credenciais, webhooks HTTPS verificados e processamento de eventos com controle de duplicidade. Como os dois números usam o aplicativo WhatsApp Business, verificar elegibilidade para coexistência com a API oficial da Meta ou com um provedor oficial. Não presumir importação do histórico ou continuidade do aplicativo antes dessa verificação. Envios e automações devem respeitar a janela de atendimento e os modelos aprovados quando exigidos.
 
 Esta interface ainda não foi publicada em um serviço de hospedagem.
+
+## Publicar na Vercel
+
+O arquivo `vercel.json` configura a hospedagem estática, sem instalação nem compilação.
+
+1. Envie o commit da interface para o GitHub.
+2. No painel da Vercel, selecione **Add New → Project** e importe `Vertex2026-lab/PLATAFORMA-DE-WHATSAPP---MSN-GAS`.
+3. Selecione a branch que contém os arquivos da interface. O commit inicial de desenvolvimento foi criado na branch `work`; não selecione `main` enquanto ela contiver apenas o README.
+4. Mantenha a pasta raiz do repositório, framework **Other** e as configurações do `vercel.json`.
+5. Clique em **Deploy** e abra o endereço HTTPS fornecido pela Vercel.
+
+Depois da conexão com o GitHub, novos commits na branch configurada geram novas versões. Publicar esta interface não conecta as contas WhatsApp; os dados continuam locais ao navegador.
