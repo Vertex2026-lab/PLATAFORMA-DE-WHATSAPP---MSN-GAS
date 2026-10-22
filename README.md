@@ -1,50 +1,44 @@
 # DISK MSN GAS
 
-Interface web de uma central de atendimento para duas contas WhatsApp Business, com identidade em laranja e preto. Esta versão é uma demonstração interativa, sem integração com números reais.
+Central web em laranja e preto para atender clientes de duas contas WhatsApp Business. Interface com atendimento, clientes, pedidos, etiquetas, automações, contas e configurações.
 
-## Executar
+## Dois modos
 
-Na pasta do repositório:
+- **Demonstração:** sem variáveis do servidor, mantém os dados fictícios no navegador e não envia WhatsApp.
+- **Operacional:** banco Supabase configurado e usuários autorizados habilitam login, dados compartilhados e API. Tokens e números oficiais habilitam a integração WhatsApp. A base real começa vazia.
+
+**A integração real depende de configurar e validar os serviços externos. O código implementado não significa que os dois números já estejam conectados.**
+
+Veja [o passo a passo de ativação](docs/ATIVAR-MVP.md).
+
+## Desenvolvimento
+
+Node.js 24, sem dependências externas de execução.
 
 ```sh
-python3 -m http.server 3000 --bind 0.0.0.0
+npm ci --ignore-scripts
+npm run dev
 ```
 
-Abra a interface na porta 3000. Não há dependências de instalação, serviços externos ou etapa de compilação. HTML, CSS, JavaScript e ícones SVG locais.
+O servidor local usa a porta 3001. Para o modo operacional, copie `.env.example` para `.env` e preencha os valores somente na sua máquina. Não versione credenciais. Cada tarefa cloud já é isolada; use o checkout existente sem criar worktrees.
 
-## Telas e recursos
+```sh
+npm test
+npm run build
+```
 
-- **Atendimento:** conversas unificadas, filtros por conta, status e não lidas, busca, respostas rápidas, composição de mensagens locais, conclusão e reabertura.
-- **Detalhes do cliente:** etiquetas, endereço, anotações, criação de pedidos e simulação de mensagem recebida. No celular, use o botão de detalhes no cabeçalho da conversa.
-- **Clientes:** busca, cadastro fictício e acesso às conversas.
-- **Pedidos:** registro de produto, quantidade, valor, endereço e pagamento; acompanhamento em quatro etapas.
-- **Etiquetas:** criação, exclusão e busca das conversas associadas.
-- **Automações:** edição de textos e ativação demonstrativa. Boas-vindas é aplicada ao simular uma entrada; as demais regras apenas registram configuração.
-- **Contas WhatsApp:** duas contas ilustrativas, renomeação e informações sobre conexão oficial.
-- **Configurações:** registro de dados da operação e exportação JSON dos dados locais.
+O build copia somente HTML, CSS e JavaScript da interface para `public/`. A Vercel publica essa pasta e as funções de `api/`. A rota `/api/config` informa o modo, sem expor credenciais. Toda alteração de dados e toda consulta de conversas reais exige sessão autenticada e e-mail autorizado.
 
-Os dados são salvos no localStorage do navegador. Não há login, sincronização entre dispositivos ou armazenamento de produção. Credenciais não são solicitadas nesta versão.
+## Validação no navegador
 
-## Validação
+Instale Playwright e seu navegador no ambiente de testes, fora das dependências de produção. Execute:
 
-- `node --check app.js` e resposta HTTP 200.
-- Fluxo validado com Playwright e Chromium do sistema: navegação nas sete telas, filtros, busca, envio local, etiquetas, endereço, notas, criação e mudança de etapa do pedido, edição de automação, boas-vindas simulada, conclusão, persistência, cadastro, escape de HTML e ausência de rolagem horizontal no celular.
-- Nenhum erro JavaScript detectado nesses fluxos.
+```sh
+node tests/browser.mjs
+```
 
-## Próxima etapa: integração real
+É possível indicar `PLAYWRIGHT_MODULE` (localização do módulo instalado) e `CHROMIUM_PATH` (executável existente). O teste inicia provedores simulados locais; não usa credenciais ou números reais.
 
-Exige servidor com autenticação de atendentes, banco de dados, gestão segura de credenciais, webhooks HTTPS verificados e processamento de eventos com controle de duplicidade. Como os dois números usam o aplicativo WhatsApp Business, verificar elegibilidade para coexistência com a API oficial da Meta ou com um provedor oficial. Não presumir importação do histórico ou continuidade do aplicativo antes dessa verificação. Envios e automações devem respeitar a janela de atendimento e os modelos aprovados quando exigidos.
+## Estado e limites
 
-Esta interface ainda não foi publicada em um serviço de hospedagem.
-
-## Publicar na Vercel
-
-O arquivo `vercel.json` configura a hospedagem estática, sem instalação nem compilação.
-
-1. Envie o commit da interface para o GitHub.
-2. No painel da Vercel, selecione **Add New → Project** e importe `Vertex2026-lab/PLATAFORMA-DE-WHATSAPP---MSN-GAS`.
-3. Selecione a branch que contém os arquivos da interface. O commit inicial de desenvolvimento foi criado na branch `work`; não selecione `main` enquanto ela contiver apenas o README.
-4. Mantenha a pasta raiz do repositório, framework **Other** e as configurações do `vercel.json`.
-5. Clique em **Deploy** e abra o endereço HTTPS fornecido pela Vercel.
-
-Depois da conexão com o GitHub, novos commits na branch configurada geram novas versões. Publicar esta interface não conecta as contas WhatsApp; os dados continuam locais ao navegador.
+Banco e API oficial ainda precisam ser configurados e testados com as contas reais. Texto, pedidos e regras são implementados; anexos, modelos aprovados, recuperação do histórico e níveis de permissão por atendente não estão incluídos. O banco inicial usa um documento versionado: paginação e testes de carga são necessários antes de adoção em alto volume. Consulte o guia de ativação para as regras de automação, recuperação de falhas e limites da fila.
