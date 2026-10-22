@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { createHmac } from "node:crypto";
-import handler from "../api/[...route].js";
+import handler from "../lib/handler.js";
 let row = null,
   sends = 0,
   failMeta = false,

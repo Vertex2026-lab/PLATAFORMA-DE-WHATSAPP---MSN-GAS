@@ -1,7 +1,7 @@
 // Local-only simulated Supabase and Meta. Never used by the deployed API.
 import http from "node:http";
 import { readFile } from "node:fs/promises";
-import handler from "../api/[...route].js";
+import handler from "../lib/handler.js";
 import { initialState, receiveMessage } from "../lib/model.js";
 export async function startFixture() {
   let row = null;

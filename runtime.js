@@ -160,13 +160,21 @@
         });
         if (refresh.ok) return api.request(path, options, false);
       }
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      const failures = {
+        404: "A rota de acesso não foi encontrada. Aguarde a publicação mais recente e atualize a página.",
+        405: "A publicação não aceitou o formulário de login. Atualize para a versão mais recente.",
+        502: "O servidor de acesso está indisponível. Tente novamente em instantes.",
+        504: "O servidor demorou para responder. Tente novamente em instantes.",
+      };
+      if (!response.ok || !data || typeof data !== "object") {
         const error = Error(
-          data.error || "Não foi possível completar a operação.",
+          (typeof data?.error === "string" && data.error) ||
+            failures[response.status] ||
+            `O servidor retornou uma resposta inesperada (HTTP ${response.status}).`,
         );
         error.status = response.status;
-        error.code = data.code;
+        error.code = data?.code;
         throw error;
       }
       return data;

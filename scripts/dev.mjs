@@ -1,7 +1,7 @@
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
-import handler from "../api/[...route].js";
+import handler from "../lib/handler.js";
 try {
   process.loadEnvFile(".env");
 } catch (e) {

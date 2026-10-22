@@ -22,6 +22,20 @@ try {
   await page.locator("#login-form").waitFor();
   assert.equal(await page.locator("main").isVisible(), false);
   await page.locator("[name=email]").fill("agent@example.test");
+  await page.route("**/api/auth/login", (route) =>
+    route.fulfill({
+      status: 404,
+      contentType: "text/plain",
+      body: "NOT_FOUND",
+    }),
+  );
+  await page.locator("[name=password]").fill("test-only-password");
+  await page.locator("#login-form button").click();
+  await page
+    .locator(".login-error")
+    .filter({ hasText: "rota de acesso não foi encontrada" })
+    .waitFor();
+  await page.unroute("**/api/auth/login");
   await page.locator("[name=password]").fill("wrong");
   await page.locator("#login-form button").click();
   await page.locator(".login-error").filter({ hasText: "inválidos" }).waitFor();
