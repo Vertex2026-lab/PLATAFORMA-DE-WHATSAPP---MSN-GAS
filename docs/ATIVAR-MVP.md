@@ -9,13 +9,13 @@ A interface aprovada é mantida. O modo operacional usa a Vercel para o site e a
 1. Abra https://supabase.com/dashboard e crie um projeto. Guarde a senha do banco com você.
 2. No projeto, abra **SQL Editor → New query**. Copie o conteúdo de `db/001_initial.sql` deste repositório e execute com **Run**.
 3. Em **Authentication → Users → Add user**, crie seu usuário com e-mail e senha. Marque a confirmação automática do e-mail, se oferecida. Não use uma senha já utilizada em outro serviço.
-4. Em **Project Settings / API**, localize a URL do projeto e a chave legada `service_role` (JWT). Esta chave é exclusiva do servidor; nunca use a chave `anon` no lugar dela.
+4. Em **Project Settings / API**, localize a URL do projeto e a chave de servidor em **Secret keys**, que começa com `sb_secret_`. Esta chave é exclusiva do servidor; nunca use uma chave publishable/anon no lugar dela. O nome da variável na Vercel continua sendo `SUPABASE_SERVICE_ROLE_KEY`.
 5. Na Vercel, abra o projeto **disk-msn-gas → Settings → Environment Variables** e adicione:
 
 | Nome | Valor inserido por você no painel seguro |
 | --- | --- |
 | `SUPABASE_URL` | URL do projeto Supabase |
-| `SUPABASE_SERVICE_ROLE_KEY` | Chave legada `service_role` do projeto |
+| `SUPABASE_SERVICE_ROLE_KEY` | Chave de servidor `sb_secret_…` do projeto |
 | `AUTHORIZED_EMAILS` | E-mail do usuário criado; para uma equipe, separar os e-mails por vírgula |
 
 6. Aplique à produção. Em **Deployments**, publique novamente o último código com **Redeploy**.
@@ -75,3 +75,11 @@ O último passo é obrigatório para considerar a integração pronta.
 - Navegador Chromium: login, persistência via API, edição contínua, pedidos, automações, horários, contas, concorrência e sete telas em celular, também com provedores simulados.
 - Fluxos anteriores de demonstração preservados e testados.
 - A migração no Supabase, a entrega real de mensagens e a operação em novo deployment precisam ser verificadas após configurar as contas reais.
+
+## Substituição de chave legada exposta
+
+1. Copie uma chave de servidor da aba **Publishable and secret API keys → Secret keys** somente para o campo seguro da Vercel. Não a envie ao chat.
+2. Edite a variável já existente `SUPABASE_SERVICE_ROLE_KEY`; preserve seu nome e troque apenas o valor pela chave `sb_secret_…`.
+3. Faça redeploy do código atualizado e confira login, leitura e gravação no banco pelo domínio principal.
+4. Só depois, na aba **Legacy anon, service_role API keys**, use **Disable legacy API keys**. Essa mudança afeta outros consumidores das chaves legadas, caso existam.
+5. Confira novamente login e persistência. Criar uma chave nova, por si só, não revoga a chave antiga.
