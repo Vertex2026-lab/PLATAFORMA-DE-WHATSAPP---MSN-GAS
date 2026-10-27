@@ -4,3 +4,5 @@
 README.md
 tests/
 .vercelignore
+
+gateway/

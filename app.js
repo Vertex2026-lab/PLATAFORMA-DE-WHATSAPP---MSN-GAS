@@ -727,7 +727,7 @@ function renderTags() {
 }
 function renderRules() {
   $("#view").innerHTML =
-    `<div class="section-banner">${icon("bolt")}<div><strong>Seu atendimento continua com a sua voz.</strong><p>${live() ? "Boas-vindas, ausência e confirmação são processadas pelo servidor nas contas conectadas." : "Regras demonstrativas. Para testar as boas-vindas, use “Simular mensagem recebida” na conversa."}</p></div><span class="status-label">${live() ? "Ativas nas contas conectadas" : "Sem execução no WhatsApp"}</span></div><div class="automation-grid">${state.rules.map((r, i) => `<article class="content-card automation-card"><div class="rule-top"><span class="metric-icon orange">${icon(i === 1 ? "clock" : i === 2 ? "box" : "chat")}</span><label class="switch"><input type="checkbox" data-rule="${i}" aria-label="Ativar ${esc(r.name)}" ${r.enabled ? "checked" : ""}><span></span></label></div><h2>${esc(r.name)}</h2><p class="rule-trigger">${esc(r.trigger)}</p><div class="rule-preview">${esc(r.text)}</div><div class="rule-footer"><span>${r.enabled ? (live() ? "● Habilitada" : "● Habilitada na demonstração") : "○ Desativada"}</span><button class="text-button" data-edit-rule="${i}">Editar mensagem ${icon("arrow")}</button></div></article>`).join("")}</div><div class="info-card">${icon("note")}<p>${live() ? "Boas-vindas responde ao primeiro contato dentro do expediente; fora do horário responde uma vez por cliente por dia. Pedido confirmado é enviado ao mover para Preparando. A janela de 24 horas é respeitada. Mensagens de texto são suportadas; anexos recebidos são identificados para consulta no aplicativo." : "Boas-vindas pode ser testada na simulação. Fora do horário e pedido confirmado têm textos configuráveis; seus gatilhos reais dependem do servidor e da integração oficial."}</p></div>`;
+    `<div class="section-banner">${icon("bolt")}<div><strong>Seu atendimento continua com a sua voz.</strong><p>${live() ? "Boas-vindas, ausência e confirmação são processadas pelo servidor nas contas conectadas." : "Regras demonstrativas. Para testar as boas-vindas, use “Simular mensagem recebida” na conversa."}</p></div><span class="status-label">${live() ? "Ativas nas contas conectadas" : "Sem execução no WhatsApp"}</span></div><div class="automation-grid">${state.rules.map((r, i) => `<article class="content-card automation-card"><div class="rule-top"><span class="metric-icon orange">${icon(i === 1 ? "clock" : i === 2 ? "box" : "chat")}</span><label class="switch"><input type="checkbox" data-rule="${i}" aria-label="Ativar ${esc(r.name)}" ${r.enabled ? "checked" : ""}><span></span></label></div><h2>${esc(r.name)}</h2><p class="rule-trigger">${esc(r.trigger)}</p><div class="rule-preview">${esc(r.text)}</div><div class="rule-footer"><span>${r.enabled ? (live() ? "● Habilitada" : "● Habilitada na demonstração") : "○ Desativada"}</span><button class="text-button" data-edit-rule="${i}">Editar mensagem ${icon("arrow")}</button></div></article>`).join("")}</div><div class="info-card">${icon("note")}<p>${live() ? "Boas-vindas responde ao primeiro contato dentro do expediente; fora do horário responde uma vez por cliente por dia. Pedido confirmado é enviado ao mover para Preparando. No modo API oficial, a janela de 24 horas é respeitada. Mensagens de texto são suportadas; anexos recebidos são identificados para consulta no aplicativo." : "Boas-vindas pode ser testada na simulação. Fora do horário e pedido confirmado têm textos configuráveis; seus gatilhos reais dependem do servidor e da integração oficial."}</p></div>`;
   document.querySelectorAll("[data-rule]").forEach(
     (el) =>
       (el.onchange = () => {
@@ -759,7 +759,7 @@ function renderRules() {
 }
 function renderAccounts() {
   $("#view").innerHTML =
-    `<div class="section-banner">${icon("phone")}<div><strong>As duas frentes do seu atendimento, juntas.</strong><p>Identifique a origem de cada conversa e responda pela conta certa.</p></div><span class="status-label">${live() ? state.accounts.filter((a) => a.verifiedAt).length : "0"} de 2 contas verificadas</span></div><div class="accounts-grid">${state.accounts.map((a) => `<article class="content-card account-card"><div class="account-card-top"><span class="account-large">${icon("phone")}</span><span class="status-label">${live() ? (a.verifiedAt ? "Verificada pela Meta" : a.configured ? "Verificar conexão" : "Configuração pendente") : "Conexão pendente"}</span></div><h2>${esc(a.name)}</h2><p>${esc(a.number)}</p><div class="account-stats"><div><strong>${state.clients.filter((c) => c.account === a.id).length}</strong><small>${live() ? "Conversas" : "Conversas fictícias"}</small></div><div><strong class="last-sync">${a.lastReceivedAt ? esc(new Date(a.lastReceivedAt).toLocaleString("pt-BR")) : "—"}</strong><small>Última mensagem recebida</small></div></div><div class="account-actions"><button class="primary" data-connect="${a.id}">${icon("phone")} ${live() ? "Verificar conexão" : "Como conectar"}</button><button class="outline" data-account-edit="${a.id}">Editar nome</button></div></article>`).join("")}</div><div class="info-card">${icon("note")}<p>Você usa os dois números no aplicativo WhatsApp Business. A conexão real precisa verificar a elegibilidade para coexistência com a API oficial. Nenhum QR code ou conexão é simulado nesta interface.</p></div>`;
+    `<div class="section-banner">${icon("phone")}<div><strong>As duas frentes do seu atendimento, juntas.</strong><p>Identifique a origem de cada conversa e responda pela conta certa.</p></div><span class="status-label">${live() ? state.accounts.filter((a) => a.verifiedAt).length : "0"} de 2 contas verificadas</span></div><div class="accounts-grid">${state.accounts.map((a) => `<article class="content-card account-card"><div class="account-card-top"><span class="account-large">${icon("phone")}</span><span class="status-label">${live() ? (a.verifiedAt ? (a.provider === "qr" ? "WhatsApp conectado" : "Verificada pela Meta") : a.configured ? "Verificar conexão" : "Configuração pendente") : "Conexão pendente"}</span></div><h2>${esc(a.name)}</h2><p>${esc(a.number)}</p><div class="account-stats"><div><strong>${state.clients.filter((c) => c.account === a.id).length}</strong><small>${live() ? "Conversas" : "Conversas fictícias"}</small></div><div><strong class="last-sync">${a.lastReceivedAt ? esc(new Date(a.lastReceivedAt).toLocaleString("pt-BR")) : "—"}</strong><small>Última mensagem recebida</small></div></div><div class="account-actions"><button class="primary" data-connect-qr="${a.id}">${icon("phone")} ${a.provider === "qr" && a.sessionStatus === "ready" ? "Ver conexão QR" : "Conectar via QR"}</button>${a.provider !== "qr" ? `<button class="outline" data-connect="${a.id}">API oficial</button>` : ""}<button class="outline" data-account-edit="${a.id}">Editar nome</button></div></article>`).join("")}</div><div class="info-card">${icon("note")}<p>Conecte cada número pelo QR da sua conta, em Aparelhos conectados no celular. A conexão requer o gateway persistente ativo. Nenhuma sessão existente do aplicativo será excluída por esta plataforma; pode ser necessário escanear novamente se o WhatsApp encerrar a sessão.</p></div>`;
   document.querySelectorAll("[data-connect]").forEach(
     (b) =>
       (b.onclick = () => {
@@ -771,6 +771,16 @@ function renderAccounts() {
           "Conexão oficial do WhatsApp",
           `<p class="muted">A interface está pronta para a próxima etapa. Para receber e enviar mensagens reais:</p><ol class="connection-steps"><li>Verificar a elegibilidade de cada número para coexistência com o aplicativo.</li><li>Configurar a conta empresarial Meta ou o provedor oficial escolhido.</li><li>Implementar servidor, banco de dados e webhook HTTPS para as duas contas.</li><li>Conectar credenciais com segurança e testar envio e recebimento.</li></ol><div class="form-note">Os números e credenciais não são solicitados nem enviados por esta demonstração.</div>`,
         );
+      }),
+  );
+  document.querySelectorAll("[data-connect-qr]").forEach(
+    (button) =>
+      (button.onclick = () => {
+        if (!live()) {
+          toast("Entre no modo operacional para conectar os números.");
+          return;
+        }
+        showQrConnection(button.dataset.connectQr);
       }),
   );
   document.querySelectorAll("[data-account-edit]").forEach(
@@ -793,6 +803,103 @@ function renderAccounts() {
       }),
   );
 }
+let qrTimer = null,
+  qrLoading = false,
+  qrAccount = null;
+$("#modal").addEventListener("close", () => {
+  clearTimeout(qrTimer);
+  qrTimer = null;
+  qrAccount = null;
+});
+async function showQrConnection(id) {
+  if (Platform.saving || Platform.failed || Platform.queue.length) {
+    toast("Aguarde os ajustes serem salvos antes de conectar.");
+    return;
+  }
+  qrAccount = id;
+  clearTimeout(qrTimer);
+  modal(
+    "Conectar WhatsApp · Conta " + id,
+    `<p class="muted">No celular deste número, abra WhatsApp Business → Aparelhos conectados → Conectar aparelho.</p><div id="qr-status" class="qr-status">Iniciando conexão...</div><div id="qr-image" class="qr-image"></div><p id="qr-number" class="muted"></p><button class="outline" id="qr-reconnect">Gerar / atualizar QR</button><button class="outline" id="qr-disconnect" hidden>Desconectar esta conta</button>`,
+  );
+  $("#qr-reconnect").onclick = () => pollQr(id, true);
+  $("#qr-disconnect").onclick = async () => {
+    if (
+      !confirm(
+        "Desconectar apenas esta sessão da plataforma? O WhatsApp do celular continuará instalado.",
+      )
+    )
+      return;
+    try {
+      await Platform.request("/api/accounts/qr", {
+        method: "POST",
+        body: JSON.stringify({ account: id, action: "disconnect" }),
+      });
+      await pollQr(id, false);
+    } catch (error) {
+      toast(error.message);
+    }
+  };
+  await pollQr(id, true);
+}
+async function pollQr(id, start = false) {
+  if (qrAccount !== id || !$("#modal").open) return;
+  if (qrLoading) {
+    qrTimer = setTimeout(() => pollQr(id, start), 1000);
+    return;
+  }
+  qrLoading = true;
+  clearTimeout(qrTimer);
+  try {
+    const row = await Platform.request(
+      "/api/accounts/qr" + (start ? "" : "?account=" + id),
+      start
+        ? {
+            method: "POST",
+            body: JSON.stringify({ account: id, action: "connect" }),
+          }
+        : {},
+    );
+    if (qrAccount !== id || !$("#modal").open) return;
+    Platform.installRemote(row);
+    const session = row.session;
+    const labels = {
+      starting: "Preparando o WhatsApp. O QR pode levar até um minuto.",
+      qr: "Escaneie este QR com o celular do número correto.",
+      authenticated: "QR aceito. Sincronizando a sessão...",
+      ready: "WhatsApp conectado.",
+      disconnected: "Sessão desconectada. Clique em Gerar / atualizar QR.",
+      error: "Não foi possível conectar.",
+    };
+    $("#qr-status").textContent =
+      session.error || labels[session.status] || "Aguardando conexão";
+    $("#qr-number").textContent = session.number
+      ? "Número conectado: +" + session.number
+      : "";
+    $("#qr-image").replaceChildren();
+    if (
+      session.status === "qr" &&
+      typeof session.qr === "string" &&
+      /^data:image\/png;base64,[a-zA-Z0-9+/=]+$/.test(session.qr) &&
+      session.qr.length < 150000
+    ) {
+      const img = document.createElement("img");
+      img.src = session.qr;
+      img.alt = "QR para conectar a conta " + id;
+      $("#qr-image").append(img);
+    }
+    $("#qr-disconnect").hidden = !["ready", "authenticated", "error"].includes(
+      session.status,
+    );
+    if (["starting", "qr", "authenticated", "ready"].includes(session.status))
+      qrTimer = setTimeout(() => pollQr(id), 4000);
+  } catch (error) {
+    if (qrAccount === id && $("#qr-status"))
+      $("#qr-status").textContent = error.message;
+  } finally {
+    qrLoading = false;
+  }
+}
 async function checkAccount(id) {
   try {
     const row = await Platform.request("/api/accounts/check", {
@@ -807,7 +914,7 @@ async function checkAccount(id) {
 }
 function renderSettings() {
   $("#view").innerHTML =
-    `<div class="settings-grid"><section class="content-card settings-card"><span class="eyebrow">PERFIL DA EMPRESA</span><h2>O jeito MSN de atender.</h2><p class="muted">Personalize os dados da sua operação.</p><form id="business-form"><label>Nome da empresa<input name="name" required maxlength="80" value="${esc(state.business.name)}"></label><label>Horário de atendimento<input name="hours" required maxlength="120" value="${esc(state.business.hours)}"></label>${live() ? `<div class="form-row"><label>Abertura<input name="start" type="time" required value="${esc(state.business.start)}"></label><label>Fechamento<input name="end" type="time" required value="${esc(state.business.end)}"></label></div><label>Dias de atendimento (horário de Fortaleza)</label><div class="schedule-days">${["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day, i) => `<label><input type="checkbox" name="days" value="${i}" ${state.business.days.includes(i) ? "checked" : ""}>${day}</label>`).join("")}</div>` : ""}<div class="form-note">${live() ? "As automações usam os dias e horas acima no fuso de Fortaleza." : "O horário fica registrado para referência. O envio automático fora do expediente exige a integração do servidor."}</div><button class="primary">Salvar configurações</button></form></section><section class="content-card settings-card"><span class="eyebrow">SOBRE ESTA VERSÃO</span><h2>Sua central está tomando forma.</h2><p class="muted">${live() ? "Dados compartilhados no banco, login restrito e atualização a cada 8 segundos. A conexão dos números depende da configuração oficial." : "Todos os dados e ajustes desta interface ficam apenas neste navegador. Ainda não há autenticação, sincronização de equipe ou conexão com o WhatsApp."}</p><div class="settings-feature">${icon("check")} Identidade visual DISK MSN GAS</div><div class="settings-feature">${icon("check")} Duas contas na mesma caixa de entrada</div><div class="settings-feature">${icon("check")} Etiquetas, pedidos e respostas rápidas</div><div class="settings-feature pending">${icon("clock")} ${live() ? "Integração disponível para contas configuradas" : "Integração oficial pendente"}</div>${!live() ? `<div class="form-note"><strong>Ativar o MVP real</strong><br>1. Crie um projeto no Supabase.<br>2. Configure o banco e o login seguindo o guia do repositório.<br>3. Adicione as credenciais nas configurações seguras da Vercel e publique novamente.<br>O modo real começa com a base vazia, sem importar clientes fictícios.</div>` : ""}<button class="outline" id="export-data">${icon("note")} Exportar dados</button></section></div>`;
+    `<div class="settings-grid"><section class="content-card settings-card"><span class="eyebrow">PERFIL DA EMPRESA</span><h2>O jeito MSN de atender.</h2><p class="muted">Personalize os dados da sua operação.</p><form id="business-form"><label>Nome da empresa<input name="name" required maxlength="80" value="${esc(state.business.name)}"></label><label>Horário de atendimento<input name="hours" required maxlength="120" value="${esc(state.business.hours)}"></label>${live() ? `<div class="form-row"><label>Abertura<input name="start" type="time" required value="${esc(state.business.start)}"></label><label>Fechamento<input name="end" type="time" required value="${esc(state.business.end)}"></label></div><label>Dias de atendimento (horário de Fortaleza)</label><div class="schedule-days">${["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day, i) => `<label><input type="checkbox" name="days" value="${i}" ${state.business.days.includes(i) ? "checked" : ""}>${day}</label>`).join("")}</div>` : ""}<div class="form-note">${live() ? "As automações usam os dias e horas acima no fuso de Fortaleza." : "O horário fica registrado para referência. O envio automático fora do expediente exige a integração do servidor."}</div><button class="primary">Salvar configurações</button></form></section><section class="content-card settings-card"><span class="eyebrow">SOBRE ESTA VERSÃO</span><h2>Sua central está tomando forma.</h2><p class="muted">${live() ? "Dados compartilhados no banco, login restrito e atualização a cada 8 segundos. A conexão dos números depende do serviço WhatsApp configurado." : "Todos os dados e ajustes desta interface ficam apenas neste navegador. Ainda não há autenticação, sincronização de equipe ou conexão com o WhatsApp."}</p><div class="settings-feature">${icon("check")} Identidade visual DISK MSN GAS</div><div class="settings-feature">${icon("check")} Duas contas na mesma caixa de entrada</div><div class="settings-feature">${icon("check")} Etiquetas, pedidos e respostas rápidas</div><div class="settings-feature pending">${icon("clock")} ${live() ? "Integração disponível para contas configuradas" : "Integração oficial pendente"}</div>${!live() ? `<div class="form-note"><strong>Ativar o MVP real</strong><br>1. Crie um projeto no Supabase.<br>2. Configure o banco e o login seguindo o guia do repositório.<br>3. Adicione as credenciais nas configurações seguras da Vercel e publique novamente.<br>O modo real começa com a base vazia, sem importar clientes fictícios.</div>` : ""}<button class="outline" id="export-data">${icon("note")} Exportar dados</button></section></div>`;
   $("#business-form").onsubmit = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -845,7 +952,7 @@ function renderSettings() {
 $("#new-conversation").onclick = () => {
   modal(
     "Nova conversa",
-    `<p class="muted">${live() ? "Cadastre o número com DDI e DDD. O envio de texto estará disponível após uma mensagem do cliente." : "Cadastre um cliente fictício para testar o atendimento."}</p><form id="new-client-form"><label>Nome do cliente<input name="name" required maxlength="80" placeholder="Nome completo"></label><label>WhatsApp do cliente<input name="phone" maxlength="40" ${live() ? 'required pattern="[+]?[1-9][0-9]{7,14}"' : ""} placeholder="${live() ? "Ex.: 5585999999999" : "Identificação fictícia (opcional)"}"></label><label>Conta de atendimento<select name="account">${state.accounts.map((a) => `<option value="${a.id}">${esc(a.name)}</option>`).join("")}</select></label><button class="primary full">Criar conversa</button></form>`,
+    `<p class="muted">${live() ? "Cadastre o número com DDI e DDD. No modo QR conectado, você pode iniciar o atendimento; na API oficial, o envio depende da janela de atendimento." : "Cadastre um cliente fictício para testar o atendimento."}</p><form id="new-client-form"><label>Nome do cliente<input name="name" required maxlength="80" placeholder="Nome completo"></label><label>WhatsApp do cliente<input name="phone" maxlength="40" ${live() ? 'required pattern="[+]?[1-9][0-9]{7,14}"' : ""} placeholder="${live() ? "Ex.: 5585999999999" : "Identificação fictícia (opcional)"}"></label><label>Conta de atendimento<select name="account">${state.accounts.map((a) => `<option value="${a.id}">${esc(a.name)}</option>`).join("")}</select></label><button class="primary full">Criar conversa</button></form>`,
   );
   $("#new-client-form").onsubmit = (e) => {
     e.preventDefault();

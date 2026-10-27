@@ -2520,3 +2520,32 @@ button:disabled {
   cursor: wait;
   opacity: 0.55;
 }
+.qr-image {
+  display: flex;
+  justify-content: center;
+  min-height: 30px;
+  margin: 18px 0;
+}
+.qr-image img {
+  width: min(300px, 100%);
+  height: auto;
+  border: 10px solid #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px #eee;
+}
+.qr-status {
+  background: #fff5eb;
+  color: #b77b51;
+  border: 1px solid #f5dfcd;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+#qr-disconnect {
+  margin-left: 8px;
+  color: #b57262;
+}
+.account-actions {
+  flex-wrap: wrap;
+}

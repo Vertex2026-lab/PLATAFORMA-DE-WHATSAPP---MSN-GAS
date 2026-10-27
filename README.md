@@ -42,3 +42,9 @@ node tests/browser.mjs
 ## Estado e limites
 
 Banco e API oficial ainda precisam ser configurados e testados com as contas reais. Texto, pedidos e regras são implementados; anexos, modelos aprovados, recuperação do histórico e níveis de permissão por atendente não estão incluídos. O banco inicial usa um documento versionado: paginação e testes de carga são necessários antes de adoção em alto volume. Consulte o guia de ativação para as regras de automação, recuperação de falhas e limites da fila.
+
+## Conexão por QR code
+
+A alternativa escolhida para os dois números usa um gateway persistente separado da Vercel. Veja [como hospedar, configurar e testar o QR](docs/CONEXAO-QR.md). O serviço está em `gateway/`, com Dockerfile e volume `/data`; não faz parte do build estático nem das funções da Vercel.
+
+A infraestrutura e o pareamento real precisam ser concluídos antes de considerar os números conectados. Os fluxos de CRM e automações são preservados. O modo oficial permanece como padrão até definir `WA_PROVIDER=qr` e as variáveis do gateway na Vercel.
